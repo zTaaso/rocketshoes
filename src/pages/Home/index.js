@@ -1,112 +1,40 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { MdAddShoppingCart } from 'react-icons/md';
 
 import { ProductList } from './styles';
 
+import api from '../../services/api';
+
 export default function Home() {
+	const [products, setProducts] = useState([]);
+
+	async function getProducts() {
+		const response = await api.get('/products');
+
+		setProducts(response.data);
+	}
+
+	useEffect(() => {
+		getProducts();
+	}, []);
+
 	return (
 		<ProductList>
-			<li>
-				<img
-					src="https://http2.mlstatic.com/tenis-feminino-sapatenis-slip-on-akatsuki-naruto-casual-D_NQ_NP_635119-MLB32775575673_112019-F.jpg"
-					alt="Tênis"
-				/>
+			{products.map((product) => (
+				<li key={product.id}>
+					<img src={product.image} alt={product.title} />
 
-				<strong>Sapatênis naruto</strong>
-				<span>R$125,00</span>
-				<button>
-					<div>
-						<MdAddShoppingCart size={20} color="#FFF" />2
-					</div>
+					<strong>{product.title}</strong>
+					<span>{product.price}</span>
+					<button>
+						<div>
+							<MdAddShoppingCart size={20} color="#FFF" />2
+						</div>
 
-					<span>Adicionar ao carrinho</span>
-				</button>
-			</li>
-
-			<li>
-				<img
-					src="https://http2.mlstatic.com/tenis-feminino-sapatenis-slip-on-akatsuki-naruto-casual-D_NQ_NP_635119-MLB32775575673_112019-F.jpg"
-					alt="Tênis"
-				/>
-
-				<strong>Sapatênis naruto</strong>
-				<span>R$125,00</span>
-				<button>
-					<div>
-						<MdAddShoppingCart size={25} color="#FFF" />2
-					</div>
-
-					<span>Adicionar ao carrinho</span>
-				</button>
-			</li>
-
-			<li>
-				<img
-					src="https://http2.mlstatic.com/tenis-feminino-sapatenis-slip-on-akatsuki-naruto-casual-D_NQ_NP_635119-MLB32775575673_112019-F.jpg"
-					alt="Tênis"
-				/>
-
-				<strong>Sapatênis naruto</strong>
-				<span>R$125,00</span>
-				<button>
-					<div>
-						<MdAddShoppingCart size={25} color="#FFF" />2
-					</div>
-
-					<span>Adicionar ao carrinho</span>
-				</button>
-			</li>
-
-			<li>
-				<img
-					src="https://http2.mlstatic.com/tenis-feminino-sapatenis-slip-on-akatsuki-naruto-casual-D_NQ_NP_635119-MLB32775575673_112019-F.jpg"
-					alt="Tênis"
-				/>
-
-				<strong>Sapatênis naruto</strong>
-				<span>R$125,00</span>
-				<button>
-					<div>
-						<MdAddShoppingCart size={25} color="#FFF" />2
-					</div>
-
-					<span>Adicionar ao carrinho</span>
-				</button>
-			</li>
-
-			<li>
-				<img
-					src="https://http2.mlstatic.com/tenis-feminino-sapatenis-slip-on-akatsuki-naruto-casual-D_NQ_NP_635119-MLB32775575673_112019-F.jpg"
-					alt="Tênis"
-				/>
-
-				<strong>Sapatênis naruto</strong>
-				<span>R$125,00</span>
-				<button>
-					<div>
-						<MdAddShoppingCart size={25} color="#FFF" />2
-					</div>
-
-					<span>Adicionar ao carrinho</span>
-				</button>
-			</li>
-
-			<li>
-				<img
-					src="https://http2.mlstatic.com/tenis-feminino-sapatenis-slip-on-akatsuki-naruto-casual-D_NQ_NP_635119-MLB32775575673_112019-F.jpg"
-					alt="Tênis"
-				/>
-
-				<strong>Sapatênis naruto</strong>
-				<span>R$125,00</span>
-				<button>
-					<div>
-						<MdAddShoppingCart size={25} color="#FFF" />2
-					</div>
-
-					<span>Adicionar ao carrinho</span>
-				</button>
-			</li>
+						<span>Adicionar ao carrinho</span>
+					</button>
+				</li>
+			))}
 		</ProductList>
 	);
 }
