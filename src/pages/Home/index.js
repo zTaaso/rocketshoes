@@ -7,7 +7,7 @@ import { ProductList } from './styles';
 
 import api from '../../services/api';
 
-function Home() {
+function Home({ dispatch }) {
 	const [products, setProducts] = useState([]);
 
 	async function getProducts() {
@@ -25,6 +25,13 @@ function Home() {
 		getProducts();
 	}, []);
 
+	function handleAddProduct(product) {
+		dispatch({
+			type: 'ADD_TO_CART',
+			product,
+		});
+	}
+
 	return (
 		<ProductList>
 			{products.map((product) => (
@@ -33,7 +40,7 @@ function Home() {
 
 					<strong>{product.title}</strong>
 					<span>{product.formatedPrice}</span>
-					<button>
+					<button onClick={() => handleAddProduct(product)}>
 						<div>
 							<MdAddShoppingCart size={20} color="#FFF" />2
 						</div>
