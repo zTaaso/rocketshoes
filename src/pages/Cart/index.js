@@ -1,19 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import {
 	MdRemoveCircleOutline,
 	MdAddCircleOutline,
 	MdDelete,
 } from 'react-icons/md';
 
+import * as CartActions from '../../store/modules/cart/actions';
+
 import { Container, ProductTable, Total } from './styles';
 
-function Cart({ cart, dispatch }) {
-	const handleRemoveProduct = (product) => {
-		dispatch({
-			type: 'REMOVE_FROM_CART',
-			productId: product.id,
-		});
+function Cart({ cart, removeFromCart }) {
+	const handleRemoveProduct = (id) => {
+		removeFromCart(id);
 	};
 
 	return (
@@ -56,7 +56,7 @@ function Cart({ cart, dispatch }) {
 								<strong>{product.formatedPrice}</strong>
 							</td>
 							<td>
-								<button type="button" onClick={() => handleRemoveProduct(product)}>
+								<button type="button" onClick={() => handleRemoveProduct(product.id)}>
 									<MdDelete size={20} color="#7159c1" />
 								</button>
 							</td>
@@ -79,6 +79,11 @@ function Cart({ cart, dispatch }) {
 	);
 }
 
-export default connect((state) => ({
+const mapStateToProps = (state) => ({
 	cart: state.cart,
-}))(Cart);
+});
+
+const mapDispatchToProps = (dispatch) =>
+	bindActionCreators(CartActions, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Cart);
