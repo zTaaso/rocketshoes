@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import {
 	MdRemoveCircleOutline,
 	MdAddCircleOutline,
@@ -7,7 +8,14 @@ import {
 
 import { Container, ProductTable, Total } from './styles';
 
-export default function Cart() {
+function Cart({ cart, dispatch }) {
+	const handleRemoveProduct = (product) => {
+		dispatch({
+			type: 'REMOVE_FROM_CART',
+			productId: product.id,
+		});
+	};
+
 	return (
 		<Container>
 			<ProductTable>
@@ -22,39 +30,38 @@ export default function Cart() {
 				</thead>
 
 				<tbody>
-					<tr>
-						<td>
-							<img
-								src="https://http2.mlstatic.com/tenis-feminino-sapatenis-slip-on-akatsuki-naruto-casual-D_NQ_NP_635119-MLB32775575673_112019-F.jpg"
-								alt="Tênis"
-							/>
-						</td>
-						<td>
-							<strong>Tênis naruto</strong>
-							<span>R$200,50</span>
-						</td>
-						<td>
-							<div>
-								<button type="button">
-									<MdRemoveCircleOutline size={20} color="#7159c1" />
-								</button>
+					{cart.map((product) => (
+						<tr>
+							<td>
+								<img src={product.image} alt={product.title} />
+							</td>
+							<td>
+								<strong>{product.title}</strong>
+								<span>{product.formatedPrice}</span>
+							</td>
+							<td>
+								<div>
+									<button type="button">
+										<MdRemoveCircleOutline size={20} color="#7159c1" />
+									</button>
 
-								<input type="number" readOnly value={1} />
+									<input type="number" readOnly value={product.amount} />
 
-								<button type="button">
-									<MdAddCircleOutline size={20} color="#7159c1" />
+									<button type="button">
+										<MdAddCircleOutline size={20} color="#7159c1" />
+									</button>
+								</div>
+							</td>
+							<td>
+								<strong>{product.formatedPrice}</strong>
+							</td>
+							<td>
+								<button type="button" onClick={() => handleRemoveProduct(product)}>
+									<MdDelete size={20} color="#7159c1" />
 								</button>
-							</div>
-						</td>
-						<td>
-							<strong>R$258,80</strong>
-						</td>
-						<td>
-							<button type="button">
-								<MdDelete size={20} color="#7159c1" />
-							</button>
-						</td>
-					</tr>
+							</td>
+						</tr>
+					))}
 				</tbody>
 			</ProductTable>
 
@@ -63,9 +70,15 @@ export default function Cart() {
 
 				<Total>
 					<span>TOTAL</span>
-					<strong>R$500,00</strong>
+					<strong>
+						{cart[0] ? cart.reduce((total, i) => total + i.price, 0) : 0}
+					</strong>
 				</Total>
 			</footer>
 		</Container>
 	);
 }
+
+export default connect((state) => ({
+	cart: state.cart,
+}))(Cart);
