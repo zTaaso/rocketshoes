@@ -10,11 +10,19 @@ import {
 import * as CartActions from '../../store/modules/cart/actions';
 
 import { Container, ProductTable, Total } from './styles';
+import { formatPrice } from '../../utils/formater';
 
-function Cart({ cart, removeFromCart }) {
+function Cart({ cart, formatedTotal, removeFromCart, updateAmount }) {
 	const handleRemoveProduct = (id) => {
 		removeFromCart(id);
 	};
+
+	function increaseProduct(product) {
+		updateAmount(product.id, product.amount + 1);
+	}
+	function decreaseProduct(product) {
+		updateAmount(product.id, product.amount - 1);
+	}
 
 	return (
 		<Container>
@@ -41,19 +49,19 @@ function Cart({ cart, removeFromCart }) {
 							</td>
 							<td>
 								<div>
-									<button type="button">
+									<button type="button" onClick={() => decreaseProduct(product)}>
 										<MdRemoveCircleOutline size={20} color="#7159c1" />
 									</button>
 
 									<input type="number" readOnly value={product.amount} />
 
-									<button type="button">
+									<button type="button" onClick={() => increaseProduct(product)}>
 										<MdAddCircleOutline size={20} color="#7159c1" />
 									</button>
 								</div>
 							</td>
 							<td>
-								<strong>{product.formatedPrice}</strong>
+								<strong>{product.formatedSubtotal}</strong>
 							</td>
 							<td>
 								<button type="button" onClick={() => handleRemoveProduct(product.id)}>
@@ -70,9 +78,7 @@ function Cart({ cart, removeFromCart }) {
 
 				<Total>
 					<span>TOTAL</span>
-					<strong>
-						{cart[0] ? cart.reduce((total, i) => total + i.price, 0) : 0}
-					</strong>
+					<strong>{formatedTotal}</strong>
 				</Total>
 			</footer>
 		</Container>
@@ -80,7 +86,16 @@ function Cart({ cart, removeFromCart }) {
 }
 
 const mapStateToProps = (state) => ({
-	cart: state.cart,
+	cart: state.cart.map((product) => ({
+		...product,
+		formatedSubtotal: formatPrice(product.price * product.amount),
+	})),
+	formatedTotal: formatPrice(
+		state.cart.reduce(
+			(total, product) => total + product.price * product.amount,
+			0
+		)
+	),
 });
 
 const mapDispatchToProps = (dispatch) =>

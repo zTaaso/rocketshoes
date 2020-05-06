@@ -1,4 +1,5 @@
 import { produce } from 'immer';
+import { MdAirlineSeatLegroomReduced } from 'react-icons/md';
 
 function cart(state = [], action) {
 	switch (action.type) {
@@ -20,6 +21,17 @@ function cart(state = [], action) {
 				const productIndex = draft.findIndex((p) => p.id === action.productId);
 				draft.splice(productIndex, 1);
 			});
+		case '@cart/UPDATE_AMOUNT': {
+			if (action.amount <= 0) {
+				return state;
+			}
+
+			return produce(state, (draft) => {
+				const productIndex = draft.findIndex((p) => p.id === action.productId);
+				console.tron.log(productIndex);
+				draft[productIndex].amount = Number(action.amount);
+			});
+		}
 
 		default:
 			return state;
