@@ -2,6 +2,7 @@ import { call, put, select, all, takeLatest } from 'redux-saga/effects';
 import { toast } from 'react-toastify';
 
 import api from '../../../services/api';
+import history from '../../../services/history';
 
 import { addToCartSuccess, updateAmountSuccess } from './actions';
 import { formatPrice } from '../../../utils/formater';
@@ -33,6 +34,7 @@ function* addToCart({ id }) {
 		};
 
 		yield put(addToCartSuccess(data));
+		history.push('/cart');
 	}
 }
 
@@ -50,7 +52,7 @@ function* updateAmount({ productId: id, amount }) {
 		toast.error('Não temos mais estoque para esse produto!');
 		return;
 	}
-	console.log('cu');
+
 	yield put(updateAmountSuccess(id, amount));
 }
 
