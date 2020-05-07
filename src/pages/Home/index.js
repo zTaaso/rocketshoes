@@ -10,7 +10,7 @@ import { ProductList } from './styles';
 
 import api from '../../services/api';
 
-function Home({ stock, addToCart }) {
+function Home({ stock, addToCartRequest }) {
 	const [products, setProducts] = useState([]);
 
 	async function getProducts() {
@@ -28,8 +28,8 @@ function Home({ stock, addToCart }) {
 		getProducts();
 	}, []);
 
-	function handleAddProduct(product) {
-		addToCart(product);
+	function handleAddProduct(id) {
+		addToCartRequest(id);
 	}
 
 	return (
@@ -40,7 +40,7 @@ function Home({ stock, addToCart }) {
 
 					<strong>{product.title}</strong>
 					<span>{product.formatedPrice}</span>
-					<button onClick={() => handleAddProduct(product)}>
+					<button onClick={() => handleAddProduct(product.id)}>
 						<div>
 							<MdAddShoppingCart size={20} color="#FFF" />
 							{stock[product.id] || 0}
