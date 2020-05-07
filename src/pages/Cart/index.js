@@ -12,16 +12,16 @@ import * as CartActions from '../../store/modules/cart/actions';
 import { Container, ProductTable, Total } from './styles';
 import { formatPrice } from '../../utils/formater';
 
-function Cart({ cart, formatedTotal, removeFromCart, updateAmount }) {
+function Cart({ cart, formatedTotal, removeFromCart, updateAmountRequest }) {
 	const handleRemoveProduct = (id) => {
 		removeFromCart(id);
 	};
 
 	function increaseProduct(product) {
-		updateAmount(product.id, product.amount + 1);
+		updateAmountRequest(product.id, product.amount + 1);
 	}
 	function decreaseProduct(product) {
-		updateAmount(product.id, product.amount - 1);
+		updateAmountRequest(product.id, product.amount - 1);
 	}
 
 	return (

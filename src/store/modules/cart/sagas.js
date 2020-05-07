@@ -1,8 +1,9 @@
 import { call, put, select, all, takeLatest } from 'redux-saga/effects';
+import { toast } from 'react-toastify';
 
 import api from '../../../services/api';
 
-import { addToCartSuccess, updateAmount } from './actions';
+import { addToCartSuccess, updateAmountSuccess } from './actions';
 import { formatPrice } from '../../../utils/formater';
 
 function* addToCart({ id }) {
@@ -16,12 +17,12 @@ function* addToCart({ id }) {
 	const newAmount = currentAmount + 1;
 
 	if (newAmount > stockAmount) {
-		alert('Não temos mais estoque para esse produto!');
+		toast.error('Não temos mais estoque para esse produto!');
 		return;
 	}
 
 	if (product) {
-		yield put(updateAmount(id, newAmount));
+		yield put(updateAmountSuccess(id, newAmount));
 	} else {
 		const response = yield call(api.get, `/products/${id}`);
 
@@ -35,4 +36,25 @@ function* addToCart({ id }) {
 	}
 }
 
-export default all([takeLatest('@cart/ADD_REQUEST', addToCart)]);
+function* updateAmount({ productId: id, amount }) {
+	const stock = yield call(api.get, `/stock/${id}`);
+
+	const stockAmount = stock.data.amount;
+
+	if (amount <= 0) {
+		toast.info('O produto não pode ter quantidade igual a zero.');
+		return;
+	}
+
+	if (amount > stockAmount) {
+		toast.error('Não temos mais estoque para esse produto!');
+		return;
+	}
+	console.log('cu');
+	yield put(updateAmountSuccess(id, amount));
+}
+
+export default all([
+	takeLatest('@cart/ADD_REQUEST', addToCart),
+	takeLatest('@cart/UPDATE_AMOUNT_REQUEST', updateAmount),
+]);
