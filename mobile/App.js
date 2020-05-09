@@ -1,11 +1,13 @@
-import React from "react";
+import React from 'react';
 
-import { AntDesign } from "@expo/vector-icons";
-import { createStackNavigator } from "@react-navigation/stack";
-import { NavigationContainer } from "@react-navigation/native";
-
-import Routes from "./src/routes";
+import Routes from './src/routes';
+import Header from './src/components/Header';
 
 export default function App() {
-  return <Routes />;
+    return (
+        <>
+            <Header />
+            <Routes />
+        </>
+    );
 }
