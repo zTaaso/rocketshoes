@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { AntDesign } from '@expo/vector-icons';
+
+import api from '../../services/api';
 
 import {
     Container,
@@ -11,33 +13,49 @@ import {
     ProductPrice,
     ProductButton,
     ButtonText,
+    ProductAmount,
+    ProductAmountText,
 } from './styles';
 
-import tenis from '../../../assets/naruto.jpg';
-
 export default function Home({ navigation }) {
+    const [products, setProducts] = useState([]);
+
+    async function getProducts() {
+        const response = await api.get('/products');
+        console.log(response.data);
+        setProducts(response.data);
+    }
+
+    useEffect(() => {
+        getProducts();
+    }, []);
+
     return (
         <Container>
             <ProductsList
-                data={[1]}
-                keyExtractor={(i) => String(i)}
-                renderItem={(item) => (
+                data={products}
+                keyExtractor={(i) => String(i.id)}
+                renderItem={({ item: product }) => (
                     <ProductItem>
                         <ProductImage
-                            width={50}
-                            height={50}
-                            resizeMode="contain"
-                            source={tenis}
+                            source={{
+                                uri: product.image,
+                            }}
                         />
                         <ProductInfo>
-                            <ProductTitle>
-                                Tênis naruto muito louco
-                            </ProductTitle>
-                            <ProductPrice>R$190,00</ProductPrice>
+                            <ProductTitle>{product.title}</ProductTitle>
+                            <ProductPrice>{product.price}</ProductPrice>
                         </ProductInfo>
 
                         <ProductButton>
-                            <AntDesign name="shoppingcart" size={25} />
+                            <ProductAmount>
+                                <AntDesign
+                                    name="shoppingcart"
+                                    size={30}
+                                    color="#FFF"
+                                />
+                                <ProductAmountText>5</ProductAmountText>
+                            </ProductAmount>
                             <ButtonText>Adicionar ao carrinho</ButtonText>
                         </ProductButton>
                     </ProductItem>

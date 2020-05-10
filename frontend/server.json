@@ -23,6 +23,18 @@
 		{
 			"id": 6,
 			"amount": 10
+		},
+		{
+			"id": 7,
+			"amount": 5
+		},
+		{
+			"id": 8,
+			"amount": 7
+		},
+		{
+			"id": 9,
+			"amount": 8
 		}
 	],
 	"products": [
@@ -45,6 +57,12 @@
 			"image": "https://rocketseat-cdn.s3-sa-east-1.amazonaws.com/modulo-redux/tenis3.jpg"
 		},
 		{
+			"id": 4,
+			"title": "Tênis de Caminhada Leve Confortável",
+			"price": 179.9,
+			"image": "https://rocketseat-cdn.s3-sa-east-1.amazonaws.com/modulo-redux/tenis1.jpg"
+		},
+		{
 			"id": 5,
 			"title": "Tênis VR Caminhada Confortável Detalhes Couro Masculino",
 			"price": 139.9,
@@ -57,22 +75,22 @@
 			"image": "https://rocketseat-cdn.s3-sa-east-1.amazonaws.com/modulo-redux/tenis3.jpg"
 		},
 		{
-			"id": 4,
-			"title": "Tênis de Caminhada Leve Confortável",
-			"price": 179.9,
-			"image": "https://rocketseat-cdn.s3-sa-east-1.amazonaws.com/modulo-redux/tenis1.jpg"
+			"id": 7,
+			"title": "Tênis Nike air Jordan",
+			"price": 199.9,
+			"image": "https://images.tcdn.com.br/img/img_prod/680475/tenis_nike_air_jordan_1_retro_high_bloodline_707_1_20191130014755.jpg"
 		},
 		{
-			"id": 7,
+			"id": 8,
 			"title": "Sapatênis Akatsuki Naruto",
 			"price": 299.9,
 			"image": "https://http2.mlstatic.com/D_NQ_NP_665849-MLB41376423447_042020-W.jpg"
 		},
 		{
-			"id": 6,
-			"title": "Tênis Nike air Jordan",
-			"price": 199.9,
-			"image": "https://images.tcdn.com.br/img/img_prod/680475/tenis_nike_air_jordan_1_retro_high_bloodline_707_1_20191130014755.jpg"
+			"id": 9,
+			"title": "Tênis Uchiha Naruto",
+			"price": 399.9,
+			"image": "https://http2.mlstatic.com/D_NQ_NP_652449-MLB40283412503_122019-O.jpg"
 		}
 	]
 }
