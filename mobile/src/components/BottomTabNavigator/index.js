@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import Home from '../../pages/Home';
@@ -8,7 +9,7 @@ import IconWithBadge from '../IconWithBadge';
 
 const Tab = createBottomTabNavigator();
 
-export default function BottomTabNavigator() {
+function BottomTabNavigator({ cartSize }) {
     return (
         <Tab.Navigator
             tabBarOptions={{
@@ -35,7 +36,9 @@ export default function BottomTabNavigator() {
                             name={iconName}
                             size={size}
                             color={color}
-                            badgeCount={iconName === 'shoppingcart' ? 7 : null}
+                            badgeCount={
+                                iconName === 'shoppingcart' ? cartSize : null
+                            }
                         />
                     );
                 },
@@ -46,3 +49,9 @@ export default function BottomTabNavigator() {
         </Tab.Navigator>
     );
 }
+
+const mapStateToProps = (state) => ({
+    cartSize: state.cart.length,
+});
+
+export default connect(mapStateToProps)(BottomTabNavigator);

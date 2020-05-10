@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import { AntDesign } from '@expo/vector-icons';
 
 import api from '../../services/api';
+
+import * as CartActions from '../../store/modules/cart/actions';
+
+import { formatPrice } from '../../utils/format';
 
 import {
     Container,
@@ -17,13 +23,21 @@ import {
     ProductAmountText,
 } from './styles';
 
-export default function Home({ navigation }) {
+function Home({ addToCart, stock }) {
     const [products, setProducts] = useState([]);
 
     async function getProducts() {
         const response = await api.get('/products');
-        console.log(response.data);
-        setProducts(response.data);
+
+        const data = response.data.map((p) => ({
+            ...p,
+            formatedPrice: formatPrice(p.price),
+        }));
+        setProducts(data);
+    }
+
+    function handleAddProduct(product) {
+        addToCart(product);
     }
 
     useEffect(() => {
@@ -44,17 +58,21 @@ export default function Home({ navigation }) {
                         />
                         <ProductInfo>
                             <ProductTitle>{product.title}</ProductTitle>
-                            <ProductPrice>{product.price}</ProductPrice>
+                            <ProductPrice>{product.formatedPrice}</ProductPrice>
                         </ProductInfo>
 
-                        <ProductButton>
+                        <ProductButton
+                            onPress={() => handleAddProduct(product)}
+                        >
                             <ProductAmount>
                                 <AntDesign
                                     name="shoppingcart"
                                     size={30}
                                     color="#FFF"
                                 />
-                                <ProductAmountText>5</ProductAmountText>
+                                <ProductAmountText>
+                                    {stock[product.id] || 0}
+                                </ProductAmountText>
                             </ProductAmount>
                             <ButtonText>Adicionar ao carrinho</ButtonText>
                         </ProductButton>
@@ -64,3 +82,15 @@ export default function Home({ navigation }) {
         </Container>
     );
 }
+
+const mapStateToProps = (state) => ({
+    stock: state.cart.reduce((stock, product) => {
+        stock[product.id] = product.amount;
+        return stock;
+    }, {}),
+});
+
+const mapDispatchToProps = (dispatch) =>
+    bindActionCreators(CartActions, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

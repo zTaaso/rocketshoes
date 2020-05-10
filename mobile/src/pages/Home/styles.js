@@ -70,9 +70,11 @@ export const ProductAmountText = styled.Text`
 
 export const ButtonText = styled.Text`
     font-family: sans-serif;
+    flex: 3;
     color: #fff;
     font-size: 18px;
     font-weight: bold;
     text-transform: uppercase;
+    text-align: center;
     padding: 10px 20px;
 `;

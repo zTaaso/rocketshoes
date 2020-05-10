@@ -1,13 +1,7 @@
 import React from 'react';
 
-import Routes from './src/routes';
-import Header from './src/components/Header';
+import Index from './src';
 
 export default function App() {
-    return (
-        <>
-            <Header />
-            <Routes />
-        </>
-    );
+    return <Index />;
 }

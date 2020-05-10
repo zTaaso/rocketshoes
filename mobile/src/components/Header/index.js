@@ -1,5 +1,6 @@
 import React from 'react';
 import * as Elements from 'react-native-elements';
+import { Image } from 'react-native';
 
 import logo from '../../../assets/Logu.png';
 
@@ -11,7 +12,7 @@ export default function Header() {
             backgroundColor="#191921"
             containerStyle={{
                 width: '100%',
-                height: 64,
+                height: 60,
                 borderBottomColor: '#7159c1',
             }}
             // backgroundImage={logo}
