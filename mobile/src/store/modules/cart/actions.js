@@ -5,9 +5,17 @@ export function addToCart(product) {
     };
 }
 
-export function removeFromCart(product) {
+export function removeFromCart(id) {
     return {
-        type: 'ADD_TO_CART',
-        product,
+        type: 'REMOVE_FROM_CART',
+        id,
+    };
+}
+
+export function updateAmount(amount, id) {
+    return {
+        type: 'UPDATE_AMOUNT',
+        amount,
+        id,
     };
 }

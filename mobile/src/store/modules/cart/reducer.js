@@ -17,6 +17,22 @@ function cart(state = [], action) {
                     });
                 }
             });
+
+        case 'REMOVE_FROM_CART':
+            return produce(state, (draft) => {
+                const productIndex = draft.findIndex((p) => p.id === action.id);
+
+                draft.splice(productIndex, 1);
+            });
+
+        case 'UPDATE_AMOUNT':
+            if (action.amount <= 0) return state;
+
+            return produce(state, (draft) => {
+                const productIndex = draft.findIndex((p) => p.id === action.id);
+
+                draft[productIndex].amount = action.amount;
+            });
         default:
             return [];
     }

@@ -28,10 +28,19 @@ import {
     CartButton,
     CartButtonText,
 } from './styles';
+import { formatPrice } from '../../utils/format';
 
-function Cart({ cart, addToCart }) {
-    function handleAddProduct(product) {
-        addToCart(product);
+function Cart({ cart, formatedTotal, removeFromCart, updateAmount }) {
+    function handleRemoveProduct(id) {
+        removeFromCart(id);
+    }
+
+    function increaseAmount(product) {
+        updateAmount(product.amount + 1, product.id);
+    }
+
+    function decreaseAmount(product) {
+        updateAmount(product.amount - 1, product.id);
     }
 
     return (
@@ -56,7 +65,11 @@ function Cart({ cart, addToCart }) {
                                     </ProductPrice>
                                 </ProductInfo>
 
-                                <RemoveItemButton>
+                                <RemoveItemButton
+                                    onPress={() =>
+                                        handleRemoveProduct(product.id)
+                                    }
+                                >
                                     <Ionicons
                                         name="md-trash"
                                         size={25}
@@ -67,7 +80,9 @@ function Cart({ cart, addToCart }) {
 
                             <ProductOptions>
                                 <ProductQuantity>
-                                    <RemoveButton>
+                                    <RemoveButton
+                                        onPress={() => decreaseAmount(product)}
+                                    >
                                         <AntDesign
                                             name="minuscircleo"
                                             size={20}
@@ -78,9 +93,7 @@ function Cart({ cart, addToCart }) {
                                         {product.amount}
                                     </ProductAmountText>
                                     <AddButton
-                                        onPress={() =>
-                                            handleAddProduct(product)
-                                        }
+                                        onPress={() => increaseAmount(product)}
                                     >
                                         <AntDesign
                                             name="pluscircleo"
@@ -90,7 +103,10 @@ function Cart({ cart, addToCart }) {
                                     </AddButton>
                                 </ProductQuantity>
 
-                                <ProductSubtotal> R$200,00 </ProductSubtotal>
+                                <ProductSubtotal>
+                                    {' '}
+                                    {product.formatedSubtotal}{' '}
+                                </ProductSubtotal>
                             </ProductOptions>
                         </Product>
                     )}
@@ -98,7 +114,7 @@ function Cart({ cart, addToCart }) {
 
                 <CartInfo>
                     <TotalText>Total</TotalText>
-                    <TotalValue>R$200,00</TotalValue>
+                    <TotalValue>{formatedTotal}</TotalValue>
                 </CartInfo>
 
                 <CartButton>
@@ -110,7 +126,13 @@ function Cart({ cart, addToCart }) {
 }
 
 const mapStateToProps = (state) => ({
-    cart: state.cart,
+    cart: state.cart.map((p) => ({
+        ...p,
+        formatedSubtotal: formatPrice(p.price * p.amount),
+    })),
+    formatedTotal: formatPrice(
+        state.cart.reduce((total, p) => p.amount * p.price + total, 0)
+    ),
 });
 
 const mapDispatchToProps = (dispatch) =>
