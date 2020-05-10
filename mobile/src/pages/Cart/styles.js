@@ -122,3 +122,15 @@ export const CartButtonText = styled.Text`
     font-size: 17px;
     font-weight: bold;
 `;
+
+export const EmptyCart = styled.View`
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    align-items: center;
+`;
+
+export const EmptyCartText = styled.Text`
+    font-size: 20px;
+    font-weight: bold;
+`;
