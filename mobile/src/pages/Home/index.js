@@ -23,7 +23,7 @@ import {
     ProductAmountText,
 } from './styles';
 
-function Home({ addToCart, stock }) {
+function Home({ addToCartRequest, stock }) {
     const [products, setProducts] = useState([]);
 
     async function getProducts() {
@@ -36,8 +36,8 @@ function Home({ addToCart, stock }) {
         setProducts(data);
     }
 
-    function handleAddProduct(product) {
-        addToCart(product);
+    function handleAddProduct(id) {
+        addToCartRequest(id);
     }
 
     useEffect(() => {
@@ -62,7 +62,7 @@ function Home({ addToCart, stock }) {
                         </ProductInfo>
 
                         <ProductButton
-                            onPress={() => handleAddProduct(product)}
+                            onPress={() => handleAddProduct(product.id)}
                         >
                             <ProductAmount>
                                 <AntDesign

@@ -33,17 +33,17 @@ import {
 } from './styles';
 import { formatPrice } from '../../utils/format';
 
-function Cart({ cart, formatedTotal, removeFromCart, updateAmount }) {
+function Cart({ cart, formatedTotal, removeFromCart, updateAmountRequest }) {
     function handleRemoveProduct(id) {
         removeFromCart(id);
     }
 
     function increaseAmount(product) {
-        updateAmount(product.amount + 1, product.id);
+        updateAmountRequest(product.amount + 1, product.id);
     }
 
     function decreaseAmount(product) {
-        updateAmount(product.amount - 1, product.id);
+        updateAmountRequest(product.amount - 1, product.id);
     }
 
     return (

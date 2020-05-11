@@ -2,39 +2,28 @@ import { produce } from 'immer';
 
 function cart(state = [], action) {
     switch (action.type) {
-        case 'ADD_TO_CART':
+        case '@cart/ADD_SUCCESS':
             return produce(state, (draft) => {
-                const productIndex = draft.findIndex(
-                    (p) => p.id === action.product.id
-                );
-
-                if (productIndex >= 0) {
-                    draft[productIndex].amount += 1;
-                } else {
-                    draft.push({
-                        ...action.product,
-                        amount: 1,
-                    });
-                }
+                const { product } = action;
+                draft.push(product);
+                console.log(draft);
             });
 
-        case 'REMOVE_FROM_CART':
+        case '@cart/REMOVE_FROM_CART':
             return produce(state, (draft) => {
                 const productIndex = draft.findIndex((p) => p.id === action.id);
 
                 draft.splice(productIndex, 1);
             });
 
-        case 'UPDATE_AMOUNT':
-            if (action.amount <= 0) return state;
-
+        case '@cart/UPDATE_AMOUNT_SUCCESS':
             return produce(state, (draft) => {
                 const productIndex = draft.findIndex((p) => p.id === action.id);
 
                 draft[productIndex].amount = action.amount;
             });
         default:
-            return [];
+            return state;
     }
 }
 
