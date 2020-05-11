@@ -3,6 +3,7 @@ import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 import api from '../../../services/api';
 
 import { formatPrice } from '../../../utils/format';
+import alertMessage from '../../../utils/alert';
 import { updateAmountSuccess, addToCartSuccess } from './actions';
 
 function* addToCart({ id }) {
@@ -18,6 +19,7 @@ function* addToCart({ id }) {
     const newAmount = currentAmount + 1;
 
     if (stockAmount < newAmount) {
+        alertMessage();
         return;
     }
 
@@ -45,6 +47,7 @@ function* updateAmount({ amount, id }) {
     const stockAmount = stock.data.amount;
 
     if (amount > stockAmount) {
+        alertMessage();
         return;
     }
 
